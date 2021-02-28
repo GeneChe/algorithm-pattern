@@ -33,6 +33,14 @@ func main() {
 		fmt.Println(v)
 	 */
 	// 内存地址是 无符号十六进制整形数据
+	// 空指针可以调用方法
+	/*
+		var s Slice
+		a := &s
+		a = nil
+		a.Append(1)
+	*/
 
 	OutCall()
+
 }
