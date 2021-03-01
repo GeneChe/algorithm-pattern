@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 // 节点
 // 通过结构体嵌套本结构体指针来实现链表
@@ -44,10 +47,13 @@ func (node *LinkNode) Print() {
 		node = node.Next
 	}
 	// 2. 递归方式
-	//if node.Data != nil {
+	//if node.Data != nil { // 正序打印
 	//	fmt.Print(node.Data, " ")
 	//}
 	//node.Next.Print()
+	//if node.Data != nil { // 倒序打印
+	//	fmt.Print(node.Data, " ")
+	//}
 
 	fmt.Println()
 }
@@ -99,7 +105,7 @@ func (node *LinkNode) InsertByTail(data interface{}) {
 
 // 根据位置插入(从0开始)
 func (node *LinkNode) InsertByIndex(index int, data interface{}) {
-	if node == nil || data == nil {
+	if node == nil || data == nil || index < 0 {
 		return
 	}
 
@@ -121,21 +127,103 @@ func (node *LinkNode) InsertByIndex(index int, data interface{}) {
 	node.Next = tempNode
 }
 
+// delete 位置
+func (node *LinkNode) DeleteByIndex(index int) {
+	if node == nil || index < 0 {
+		return
+	}
+	// 移动节点到index前一个位置
+	for i := 0; i < index; i++ {
+		if node.Next == nil {
+			return
+		}
+		node = node.Next
+	}
+
+	// 将前一个节点指针域指向后一个节点指针域指向的地址
+	node.Next = node.Next.Next
+}
+
+// delete 数据
+func (node *LinkNode) DeleteByData(data interface{}) {
+	if node == nil || data == nil {
+		return
+	}
+
+	// 遍历节点, 比较数据
+	var preNode *LinkNode
+	for node.Next != nil {
+		preNode = node
+		node = node.Next
+		// 比较interface{}中的数据值和数据类型
+		if reflect.TypeOf(node.Data) == reflect.TypeOf(data) && node.Data == data {
+			preNode.Next = node.Next
+			// 置空node
+			node.Data = nil
+			node.Next = nil
+			// 有return是删除第一个相同的元素, 没有就是删除所有的元素
+			return
+		}
+	}
+}
+
+// search (位置不计算头结点)
+func (node *LinkNode) Search(data interface{}) int {
+	if node == nil || data == nil {
+		return -1
+	}
+
+	// 遍历节点
+	var count int
+	for node.Next != nil {
+		node = node.Next
+		// 比较两个接口类型的值是否相同
+		if reflect.DeepEqual(node.Data, data) {
+			return count
+		}
+		count++
+	}
+
+	return -1
+}
+
+// destroy
+func (node *LinkNode) Destroy() {
+	if node == nil {
+		return
+	}
+	// 使用递归方式销毁链表
+	node.Next.Destroy()
+	node.Data = nil
+	node.Next = nil
+}
+
 func OutCall_l() {
 	l := new(LinkNode) // l就是头结点
 	// 创建链表
-	l.Create(1, 2, 3)
+	l.Create(1, 2, 3, 4, 5)
 	l.Print()
 	// 计算链表长度
-	count := l.Length()
-	fmt.Println("长度:", count)
+	//count := l.Length()
+	//fmt.Println("长度:", count)
 	// 头插
-	l.InsertByHead(0)
-	l.Print()
+	//l.InsertByHead(0)
+	//l.Print()
 	// 尾插
-	l.InsertByTail(4)
-	l.Print()
+	//l.InsertByTail(4)
+	//l.Print()
 	// 插入(位置)
-	l.InsertByIndex(5, 5)
+	//l.InsertByIndex(5, 5)
+	//l.Print()
+	// 删除(位置)
+	//l.DeleteByIndex(2)
+	//l.Print()
+	// 删除(数据)
+	//l.DeleteByData(2)
+	//l.Print()
+	index := l.Search(3)
+	fmt.Println("index:", index)
+	l.Destroy()
+	fmt.Println("链表销毁")
 	l.Print()
 }

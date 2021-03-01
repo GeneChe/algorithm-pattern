@@ -41,6 +41,8 @@ func main() {
 		a.Append(1)
 	*/
 
-	//OutCall()
-	OutCall_l()
+	// OutCall()
+	// OutCall_l()
+	// OutCall_d()
+	OutCall_c()
 }
