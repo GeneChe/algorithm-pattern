@@ -44,5 +44,6 @@ func main() {
 	// OutCall()
 	// OutCall_l()
 	// OutCall_d()
-	OutCall_c()
+	//OutCall_c()
+	OutCall_s()
 }
