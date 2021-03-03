@@ -32,6 +32,10 @@ func main() {
 		v := reflect.ValueOf(i)
 		fmt.Println(v)
 	 */
+
+	//s := []int{1, 2, 3}
+	//fmt.Println(s[1:1]) // [] 不报错
+
 	// 内存地址是 无符号十六进制整形数据
 	// 空指针可以调用方法
 	/*
@@ -46,5 +50,6 @@ func main() {
 	// OutCall_d()
 	//OutCall_c()
 	//OutCall_s()
-	OutCall_q()
+	//OutCall_q()
+	OutCall_t()
 }
