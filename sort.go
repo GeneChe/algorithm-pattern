@@ -299,7 +299,6 @@ func BinarySearch(arr []int, num int) (bool, int) {
 	return false, -1
 }
 
-
 // 变相排序 基于大量重复 值在某一范围
 // 如高考分数等情况
 func sample() {
