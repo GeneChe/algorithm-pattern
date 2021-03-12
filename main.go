@@ -1,5 +1,12 @@
 package main
 
+import (
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+)
+
 // 求最大公约数
 func gcd(x, y int) int {
 	for y != 0 {
@@ -17,8 +24,56 @@ func fib(n int) int {
 	return x
 }
 
+// 错误重试
+func waitForServer(url string) error {
+	const timeout = time.Minute
+	deadline := time.Now().Add(timeout)
+	for tries := 0; time.Now().Before(deadline); tries++ {
+		_, err := http.Head(url)
+		if err == nil {
+			return nil
+		}
+		log.Printf("server not responding (%s);retrying...", err)
+		time.Sleep(time.Second << tries)
+	}
+	return fmt.Errorf("server %s failed to respond after %s", url, timeout)
+}
+
+// defer
+func bigSlowOperation() {
+	// 第一次遇到defer时会计算trace(""), 函数退出时会执行trace的返回值(一个函数)
+	defer trace("bigSlowOperation")() // 注意最后面加上()
+	time.Sleep(time.Second * 5)
+}
+
+// 统计函数执行时间
+func trace(msg string) func() {
+	start := time.Now()
+	log.Printf("enter %s", msg)
+	return func () {
+		log.Printf("exit %s (%s)", msg, time.Since(start))
+	}
+}
+
 func main() {
+	// 转义url中的特殊字符&或?
+	//url.QueryEscape("")
+	//http.StatusOK
 	/*
+		var rmdirs []func()
+		dirs := tempDirs()
+		for i := 0; i < len(dirs); i++ {
+			os.MkdirAll(dirs[i], 0755) // OK
+			rmdirs = append(rmdirs, func() {
+				os.RemoveAll(dirs[i]) // NOTE: incorrect!
+				// 循环结束时, 变量i保存的是最后一次循环的值, 而不是每次循环的值
+				// 解决方式就是 在每次循环时都定义一个局部变量, 常用与循环变量同名的局部变量 i := i
+			})
+		}
+		**匿名函数内, 存的是外部局部变量的地址**
+
+		defer语句中的函数会在 return语句更新返回值变量 后 再执行
+
 		基础知识
 		// slice 结构是由 1. 数据的内存地址(指针类型占用8字节) 2. len 有效数据长度 3. cap可扩容的有效容量 组成	24字节
 		// 切片名是一个地址, 它指向其存储元素的首地址. 切片是引用传递
@@ -69,5 +124,17 @@ func main() {
 	//OutCall_s()
 	//OutCall_q()
 	//OutCall_t()
-	OutCall_st()
+	//OutCall_st()
+
+	// append nil 不出错
+	//var a []int
+	//a = nil
+	//a = append(a, 1)
+	//fmt.Println(a)
+
+	// err retry
+	//if err := waitForServer("www.baidu.com"); err != nil {
+	//	log.Fatalf("Site is down: %v\n", err)
+	//}
+	bigSlowOperation()
 }
