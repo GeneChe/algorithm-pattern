@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"time"
@@ -67,21 +65,21 @@ func (a aa) Write(p []byte) (int, error) {
 
 func main() {
 	// interface
-	var a aa
-	var w io.Writer
-	w = &a
-	w = a
-	fmt.Fprintln(w, "")
+	//var a aa
+	//var w io.Writer
+	//w = &a
+	//w = a
+	//fmt.Fprintln(w, "")
 
 	// 接口值
 	// 一个包含nil指针的接口不是nil接口
-	var buf *bytes.Buffer
-	w = buf
-	if w != nil {
+	//var buf *bytes.Buffer
+	//w = buf
+	//if w != nil {
 		// 这个条件永远为true, 虽然w的动态值为nil, 但是其动态类型为(*bytes.Buffer), 所以w!=nil成立
 		// 解决方法: 将buf定义为 io.Writer类型
 		// nil的接口是 动态值和动态类型都为nil
-	}
+	//}
 	//sort.Sort()
 	//sort.Strings()
 	//sort.Reverse()
@@ -156,6 +154,7 @@ func main() {
 	//OutCall_q()
 	//OutCall_t()
 	//OutCall_st()
+	OutCall_h()
 
 	// append nil 不出错
 	//var a []int
@@ -167,5 +166,5 @@ func main() {
 	//if err := waitForServer("www.baidu.com"); err != nil {
 	//	log.Fatalf("Site is down: %v\n", err)
 	//}
-	bigSlowOperation()
+	//bigSlowOperation()
 }
