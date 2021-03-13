@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"time"
@@ -55,7 +57,36 @@ func trace(msg string) func() {
 	}
 }
 
+// T 实现了接口中的方法, 那么接口变量赋值就是 T或*T 类型的值
+// *T 实现了接口中的方法, 那么接口变量赋值就是 *T 类型的值
+type aa int
+
+func (a aa) Write(p []byte) (int, error) {
+	return 0, nil
+}
+
 func main() {
+	// interface
+	var a aa
+	var w io.Writer
+	w = &a
+	w = a
+	fmt.Fprintln(w, "")
+
+	// 接口值
+	// 一个包含nil指针的接口不是nil接口
+	var buf *bytes.Buffer
+	w = buf
+	if w != nil {
+		// 这个条件永远为true, 虽然w的动态值为nil, 但是其动态类型为(*bytes.Buffer), 所以w!=nil成立
+		// 解决方法: 将buf定义为 io.Writer类型
+		// nil的接口是 动态值和动态类型都为nil
+	}
+	//sort.Sort()
+	//sort.Strings()
+	//sort.Reverse()
+	//sort.IsSorted()
+
 	// 转义url中的特殊字符&或?
 	//url.QueryEscape("")
 	//http.StatusOK
