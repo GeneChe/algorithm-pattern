@@ -154,7 +154,8 @@ func main() {
 	//OutCall_q()
 	//OutCall_t()
 	//OutCall_st()
-	OutCall_h()
+	//OutCall_h()
+	OutCall_ct()
 
 	// append nil 不出错
 	//var a []int
@@ -167,4 +168,13 @@ func main() {
 	//	log.Fatalf("Site is down: %v\n", err)
 	//}
 	//bigSlowOperation()
+
+	//ch := make(chan int, 1)
+	//for i := 0; i < 10; i++ {
+	//	select {
+	//	case x := <-ch:
+	//		fmt.Println(x)
+	//	case ch <- i:
+	//	}
+	//}
 }
