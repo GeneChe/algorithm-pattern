@@ -155,7 +155,8 @@ func main() {
 	//OutCall_t()
 	//OutCall_st()
 	//OutCall_h()
-	OutCall_ct()
+	//OutCall_ct()
+	OutCall_r()
 
 	// append nil 不出错
 	//var a []int
