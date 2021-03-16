@@ -1,4 +1,4 @@
-package main
+package base
 
 import (
 	"fmt"
@@ -21,7 +21,7 @@ func OutCall_h() {
 
 	//io.WriteString()
 
-	db := database{"shorts":22, "socks":50}
+	db := database{"shorts": 22, "socks":50}
 	mu := http.NewServeMux()
 	mu.HandleFunc("/list", db.list)
 	mu.HandleFunc("/price", db.price) // web服务器在一个新的协程中调用每一个handler
@@ -33,6 +33,8 @@ func OutCall_h() {
 }
 
 func (d database) list(w http.ResponseWriter, r *http.Request)  {
+	// r.ParseForm()
+	// r.Form
 	for k, v := range d {
 		fmt.Fprintf(w, "%s=%d\n", k, v)
 	}

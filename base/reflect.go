@@ -1,4 +1,4 @@
-package main
+package base
 
 import (
 	"fmt"
@@ -47,6 +47,13 @@ func OutCall_r() {
 	// reflect.ValueOf(&x).Elem() 解引用方式生成的，指向另一个变量，因此是可取地址的
 	fmt.Println("&v: ", v.CanAddr())
 
+	// 获取值枚举它的方法
+	// v.NumMethod()
+	// v.Method()
+	// v.MethodByName()
+	// v.Type().Method()
+	// v.Call()
+
 	// 对于slice和array的方法
 	// v.Len()
 	// v.Index(1)
@@ -55,10 +62,12 @@ func OutCall_r() {
 	// v.NumField()
 	// v.Type().Field(1).Name // 成员名
 	// v.Field(1) // 成员值
+	// v.FieldByName("")
 
 	// 对于map
 	// v.MapKeys()
 	// v.MapIndex(key) // 参数是key
+	// v.SetMapIndex(key, value)
 
 	// 对于ptr
 	// v.IsNil()
@@ -67,4 +76,42 @@ func OutCall_r() {
 	// 对于接口
 	// v.IsNil()
 	// v.Elem()
+
+	// v.IsValid()
+
+	// 更新变量的值
+	var aa = 10
+	d := reflect.ValueOf(&aa).Elem() // d和aa变量等效
+	dr := d.Addr() // dr存的是指向aa内容的指针, 类型是value
+	p := dr.Interface().(*int) // 将dr转为interface, 再断言具体类型
+	*p = 5
+	fmt.Println(aa)
+	// 或者 通过调用可取地址的reflect.Value的reflect.Value.Set方法来更新对应的值
+	// 注意: 确保该类型的变量可以接受对应的值, 这里int64(4)就会panic
+	d.Set(reflect.ValueOf(4))  // d.SetInt(4)
+	// v.Set(reflect.ValueOf(5)) panic 因为v不可取地址
+	fmt.Println(aa)
+
+	// 获取结构体成员tag信息
+	{
+		var vv struct{
+			name string `http:"l"`
+		}
+		v := reflect.ValueOf(&vv).Elem()
+		aaa := v.Type().Field(0) // name string `http:"l"`
+		l := aaa.Tag.Get("http")
+		fmt.Println(l)
+	}
+
+	// 反射机制并不能修改这些未导出的成员的值
+	stdout := reflect.ValueOf(os.Stdout).Elem() // os.file
+	fmt.Println(stdout.Type())
+	fd := stdout.FieldByName("name")
+	fmt.Println(fd.String())
+	// CanSet是用于检查对应的reflect.Value是否是可取地址并可被修改的
+	fmt.Println(fd.CanAddr(), fd.CanSet())
+	// fd.SetString("dd")	panic  reflect.Value.SetString using value obtained using unexported field
+
+	//item := reflect.New(v.Type().Elem()).Elem()
+	//reflect.Append(v, item)
 }

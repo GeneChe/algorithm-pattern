@@ -1,10 +1,12 @@
 package main
 
 import (
+	"algorithm-pattern/base"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
+	"unsafe"
 )
 
 // 求最大公约数
@@ -109,6 +111,9 @@ func main() {
 		var s []int
 		var i int
 		var f float64
+		string 是由 data 和 len组成 所以是16字节
+		map, chan, func只有一个引用 所以是8字节
+		interface 由 type和value组成 所以16字节
 
 		// unsafe.Sizeof() 计算数据类型在内存中占用的字节大小
 		fmt.Println("float64占得内存大小:", unsafe.Sizeof(f))
@@ -137,26 +142,8 @@ func main() {
 	//s := []int{1, 2, 3}
 	//fmt.Println(s[1:1]) // [] 不报错
 
-	// 内存地址是 无符号十六进制整形数据
-	// 空指针可以调用方法
-	/*
-		var s Slice
-		a := &s
-		a = nil
-		a.Append(1)
-	*/
-
-	// OutCall()
-	// OutCall_l()
-	// OutCall_d()
-	//OutCall_c()
-	//OutCall_s()
-	//OutCall_q()
-	//OutCall_t()
-	//OutCall_st()
-	//OutCall_h()
-	//OutCall_ct()
-	OutCall_r()
+	var s = ""
+	fmt.Println(unsafe.Sizeof(s))
 
 	// append nil 不出错
 	//var a []int
@@ -178,4 +165,27 @@ func main() {
 	//	case ch <- i:
 	//	}
 	//}
+
+	// 内存地址是 无符号十六进制整形数据
+	// 空指针可以调用方法
+	/*
+		var s Slice
+		a := &s
+		a = nil
+		a.Append(1)
+	*/
+
+	// OutCall()
+	// OutCall_l()
+	// OutCall_d()
+	//OutCall_c()
+	//OutCall_s()
+	//OutCall_q()
+	//OutCall_t()
+	//OutCall_st()
+	//OutCall_h()
+	//OutCall_ct()
+	//OutCall_r()
+	base.OutCall_sl()
+
 }

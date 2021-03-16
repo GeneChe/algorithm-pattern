@@ -1,4 +1,4 @@
-package main
+package base
 
 /*
 #include "stdlib.h"
@@ -98,7 +98,7 @@ func (s *Slice) Append(data ...int) {
 	}
 	if flag {
 		// 指针 = realloc(指针, 总容量)
-		s.Data = C.realloc(s.Data, C.ulong(s.Cap) * 2 * Size)
+		s.Data = C.realloc(s.Data, C.ulong(s.Cap) * 2 *Size)
 	}
 
 	// 将指针偏移到最后
@@ -173,7 +173,7 @@ func (s *Slice) Delete(index int) {
 	// 将索引位置之后的数据往前移动
 	for i := index; i < s.Len - 1; i++ {
 		// 将后一个指针指向的值赋值给当前指针指向的值
-		*(*int)(unsafe.Pointer(p)) = *(*int)(unsafe.Pointer(p+Size))
+		*(*int)(unsafe.Pointer(p)) = *(*int)(unsafe.Pointer(p+ Size))
 		// 移动一次指针
 		p += Size
 	}
@@ -197,7 +197,7 @@ func (s *Slice) Insert(index, data int) {
 	// 从后往前遍历
 	for i := s.Len; i > index; i-- {
 		// 将前一个指针指向的值赋值给后一个指针指向的值
-		*(*int)(unsafe.Pointer(p)) = *(*int)(unsafe.Pointer(p-Size))
+		*(*int)(unsafe.Pointer(p)) = *(*int)(unsafe.Pointer(p- Size))
 		// 将指针前移一位
 		p -= Size
 	}
